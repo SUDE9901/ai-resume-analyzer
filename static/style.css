@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0f172a;
+    color: white;
+}
+
+/* Layout */
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #111827;
+    padding: 20px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    color: #38bdf8;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    color: #cbd5e1;
+    padding: 10px;
+    margin: 5px 0;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.sidebar a:hover {
+    background: #1e293b;
+    color: white;
+}
+
+/* Main content */
+.main {
+    margin-left: 240px;
+    padding: 30px;
+    width: 100%;
+}
+
+/* Upload box */
+.upload-box {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+}
+
+/* Button */
+button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #38bdf8;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0ea5e9;
+}
+
+/* Cards */
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Headings */
+h1 {
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-top: 10px;
+    color: #38bdf8;
+}
+
+p {
+    color: #cbd5e1;
+    font-size: 14px;
+}

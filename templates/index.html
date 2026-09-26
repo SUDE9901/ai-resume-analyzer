@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resume Intelligence | Premium Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --gold: #c9a660;
+        --gold-bright: #e8cf8a;
+        --gold-dim: #8a7343;
+        --ink: #0c0e14;
+        --ink2: #12141d;
+        --panel: rgba(255,255,255,0.035);
+        --border: rgba(201,166,96,0.18);
+        --text: #ece9e2;
+        --muted: #9a97a3;
+        --violet: #8b7cf6;
+        --emerald: #3fd6a3;
+        --rose: #f3708a;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{ scroll-behavior:smooth; }
+    body{
+        font-family:'Manrope',sans-serif;
+        min-height:100vh;
+        background:
+            radial-gradient(ellipse 900px 500px at 15% -10%, rgba(139,124,246,0.14), transparent 60%),
+            radial-gradient(ellipse 900px 500px at 90% 110%, rgba(201,166,96,0.10), transparent 60%),
+            var(--ink);
+        color:var(--text);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        padding:70px 20px 40px;
+        position:relative;
+        overflow-x:hidden;
+        letter-spacing:0.15px;
+    }
+    body::before{
+        content:"";
+        position:fixed; inset:0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+        pointer-events:none;
+        z-index:0;
+    }
+    .glow{
+        position:fixed; width:600px; height:600px; border-radius:50%;
+        filter: blur(90px); z-index:0; pointer-events:none;
+        animation: drift 16s ease-in-out infinite alternate;
+    }
+    .glow.g1{ top:-250px; left:-200px; background: radial-gradient(circle, rgba(139,124,246,0.18), transparent 70%); }
+    .glow.g2{ bottom:-250px; right:-200px; background: radial-gradient(circle, rgba(201,166,96,0.14), transparent 70%); animation-delay:3s; }
+    @keyframes drift{ 0%{transform:translate(0,0);} 100%{transform:translate(50px,30px);} }
+
+    header{ text-align:center; z-index:1; margin-bottom:6px; }
+    .crest{
+        width:56px; height:56px; margin:0 auto 18px;
+        border:1px solid var(--border);
+        border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        font-family:'Playfair Display',serif;
+        font-size:22px; color:var(--gold-bright);
+        background: linear-gradient(145deg, rgba(201,166,96,0.1), transparent);
+        box-shadow: 0 0 30px rgba(201,166,96,0.15);
+    }
+    .eyebrow{
+        font-size:11px; letter-spacing:4px; text-transform:uppercase;
+        color:var(--gold); margin-bottom:14px; font-weight:600;
+    }
+    h1{
+        font-family:'Playfair Display',serif;
+        font-weight:700;
+        font-size:44px;
+        line-height:1.15;
+        color:var(--gold-bright);
+        margin-bottom:12px;
+        letter-spacing:0.3px;
+    }
+    h1 em{
+        font-style:italic;
+        font-weight:500;
+        background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--violet));
+        background-size:200% auto;
+        -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        animation: shine 6s linear infinite;
+    }
+    @keyframes shine{ to{ background-position:200% center; } }
+    .subtitle{
+        font-family:'Cormorant Garamond', serif;
+        font-style:italic;
+        font-size:19px;
+        color:var(--muted);
+        margin-bottom:46px;
+        letter-spacing:0.2px;
+    }
+
+    .card{
+        background: var(--panel);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border:1px solid var(--border);
+        border-radius:22px;
+        padding:44px;
+        max-width:640px;
+        width:100%;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+        margin-bottom:28px;
+        z-index:1;
+        position:relative;
+    }
+    .card-label{
+        font-size:11px; letter-spacing:3px; text-transform:uppercase;
+        color:var(--gold-dim); font-weight:700; margin-bottom:20px;
+    }
+
+    .upload-box{
+        border:1px dashed rgba(201,166,96,0.35);
+        border-radius:18px;
+        padding:44px 24px;
+        text-align:center;
+        cursor:pointer;
+        transition:0.4s cubic-bezier(.2,.8,.2,1);
+        background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent);
+    }
+    .upload-box:hover{
+        border-color: var(--gold-bright);
+        background: rgba(201,166,96,0.06);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    .upload-box input[type=file]{ display:none; }
+    .upload-icon{
+        width:50px;height:50px; margin:0 auto 16px;
+        border-radius:50%;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+        display:flex; align-items:center; justify-content:center;
+        font-size:20px; color:var(--ink);
+        box-shadow: 0 8px 24px rgba(201,166,96,0.3);
+    }
+    .upload-label{ color:var(--muted); font-size:14.5px; line-height:1.6; }
+    .upload-label b{ color: var(--gold-bright); font-weight:600; }
+    #fileName{ margin-top:14px; font-size:13px; color:var(--emerald); font-weight:500; }
+
+    button{
+        width:100%;
+        margin-top:28px;
+        padding:17px;
+        border:none;
+        border-radius:14px;
+        background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-bright));
+        background-size:200% auto;
+        color: var(--ink);
+        font-family:'Manrope',sans-serif;
+        font-size:14.5px;
+        font-weight:800;
+        letter-spacing:1.5px;
+        text-transform:uppercase;
+        cursor:pointer;
+        transition:0.35s;
+        box-shadow: 0 10px 30px rgba(201,166,96,0.25);
+    }
+    button:hover{ background-position:right center; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(201,166,96,0.4); }
+    button:active{ transform: translateY(-1px); }
+
+    .score-wrap{ display:flex; flex-direction:column; align-items:center; margin-bottom:10px; }
+    .score-circle{
+        width:172px; height:172px;
+        border-radius:50%;
+        display:flex; align-items:center; justify-content:center;
+        background: conic-gradient(var(--gold-bright) calc(var(--score) * 1%), rgba(255,255,255,0.05) 0);
+        position:relative;
+        margin-bottom:18px;
+        box-shadow: 0 0 50px rgba(201,166,96,0.2);
+    }
+    .score-circle::before{
+        content:"";
+        position:absolute;
+        width:136px; height:136px;
+        background: var(--ink2);
+        border-radius:50%;
+        box-shadow: inset 0 2px 20px rgba(0,0,0,0.5);
+        border:1px solid rgba(255,255,255,0.04);
+    }
+    .score-circle .inner{ position:relative; z-index:1; text-align:center; }
+    .score-circle .num{ font-family:'Playfair Display',serif; font-size:42px; font-weight:700; color:var(--gold-bright); display:block; }
+    .score-circle .pct{ font-size:12px; color:var(--muted); letter-spacing:1px; }
+    .score-caption{
+        font-family:'Cormorant Garamond',serif; font-style:italic;
+        color:var(--muted); font-size:16px;
+    }
+
+    .best-role{
+        text-align:center;
+        background: linear-gradient(90deg, rgba(201,166,96,0.1), rgba(139,124,246,0.1));
+        border:1px solid var(--border);
+        border-radius:16px;
+        padding:18px;
+        margin:26px 0;
+        color:var(--gold-bright);
+        font-family:'Playfair Display',serif;
+        font-weight:600;
+        font-size:17px;
+    }
+    .best-role span{ font-size:12px; display:block; font-family:'Manrope'; letter-spacing:2px; text-transform:uppercase; color:var(--gold-dim); margin-bottom:6px; font-weight:700; }
+
+    .section-title{
+        font-size:12px;
+        text-transform:uppercase;
+        letter-spacing:2.5px;
+        margin:32px 0 16px;
+        color:var(--gold-dim);
+        font-weight:700;
+        display:flex; align-items:center; gap:10px;
+    }
+    .section-title::after{ content:""; flex:1; height:1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+    .role-bar{ margin-bottom:16px; }
+    .role-bar .label{ display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:7px; color:#cfcbd6; font-weight:500; }
+    .role-track{ background: rgba(255,255,255,0.05); border-radius:10px; height:8px; overflow:hidden; }
+    .role-fill{ height:100%; border-radius:10px; background: linear-gradient(90deg, var(--violet), var(--gold-bright)); box-shadow: 0 0 12px rgba(139,124,246,0.5); }
+
+    .tag{
+        display:inline-block;
+        padding:8px 18px;
+        border-radius:30px;
+        font-size:12.5px;
+        margin:4px;
+        font-weight:600;
+        letter-spacing:0.3px;
+        border:1px solid transparent;
+    }
+    .tag.found{ background: rgba(63,214,163,0.1); color:var(--emerald); border-color: rgba(63,214,163,0.28); }
+    .tag.missing{ background: rgba(243,112,138,0.08); color:var(--rose); border-color: rgba(243,112,138,0.22); }
+
+    ul.suggestions{ list-style:none; }
+    ul.suggestions li{
+        background: rgba(255,255,255,0.025);
+        padding:14px 18px;
+        border-radius:12px;
+        margin-bottom:10px;
+        border-left:2px solid var(--gold);
+        font-size:14px;
+        color:#d8d5de;
+        font-weight:400;
+    }
+
+    footer{
+        font-family:'Cormorant Garamond',serif; font-style:italic;
+        color:var(--muted); font-size:14px; margin-top:16px; z-index:1;
+        letter-spacing:0.3px;
+    }
+    footer b{ color:var(--gold-dim); font-style:normal; }
+
+    .fade-in{ opacity:0; transform:translateY(18px); animation: fadeUp 0.8s ease forwards; }
+    .fade-in.d1{ animation-delay:0.05s; }
+    .fade-in.d2{ animation-delay:0.2s; }
+    @keyframes fadeUp{ to{ opacity:1; transform:translateY(0); } }
+
+    .upload-box.dragover{
+        border-color: var(--gold-bright);
+        background: rgba(201,166,96,0.1);
+        transform: scale(1.01);
+    }
+
+    button.loading{ pointer-events:none; opacity:0.85; }
+    .spinner{
+        display:none; width:16px; height:16px; border-radius:50%;
+        border:2px solid rgba(12,14,20,0.35); border-top-color:var(--ink);
+        margin-right:8px; animation: spin 0.7s linear infinite;
+    }
+    button.loading .spinner{ display:inline-block; }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+    .btn-row{ display:flex; align-items:center; justify-content:center; }
+
+    @media (max-width:480px){
+        h1{ font-size:32px; }
+        .card{ padding:28px 22px; }
+        .score-circle{ width:140px; height:140px; }
+        .score-circle::before{ width:110px; height:110px; }
+        body{ padding:44px 14px 30px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+
+<header class="fade-in">
+    <div class="crest">✦</div>
+    <div class="eyebrow">Resume Intelligence Suite</div>
+    <h1>Elevate Your <em>Career Profile</em></h1>
+    <div class="subtitle">A refined analysis of your resume — precision, clarity, distinction</div>
+</header>
+
+<div class="card fade-in d1">
+    <div class="card-label">Step One — Upload</div>
+    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+        <label class="upload-box" for="resumeFile" id="uploadBox">
+            <div class="upload-icon">⇧</div>
+            <div class="upload-label">Drag your resume here, or <b>browse to select</b><br>PDF format only</div>
+            <div id="fileName"></div>
+            <input type="file" name="resume_pdf" id="resumeFile" accept=".pdf" required>
+        </label>
+        <button type="submit" id="submitBtn">
+            <span class="btn-row"><span class="spinner"></span><span class="btn-text">Begin Analysis</span></span>
+        </button>
+    </form>
+</div>
+
+{% if result %}
+<div class="card fade-in d2">
+    <div class="card-label">Analysis Report</div>
+
+    <div class="score-wrap">
+        <div class="score-circle" style="--score: {{ result.score }}">
+            <div class="inner">
+                <span class="num">{{ result.score }}</span>
+                <span class="pct">OUT OF 100</span>
+            </div>
+        </div>
+        <div class="score-caption">Overall Compatibility Score</div>
+    </div>
+
+    <div class="best-role">
+        <span>Recommended Career Path</span>
+        {{ result.best_role|title }}
+    </div>
+
+    <div class="section-title">Role Compatibility</div>
+    {% for role, percent in result.role_match.items() %}
+    <div class="role-bar">
+        <div class="label"><span>{{ role|title }}</span><span>{{ percent }}%</span></div>
+        <div class="role-track"><div class="role-fill" style="width:{{ percent }}%"></div></div>
+    </div>
+    {% endfor %}
+
+    <div class="section-title">Skills Identified</div>
+    <div>
+        {% for skill in result.found_skills %}
+            <span class="tag found">{{ skill }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="section-title">Areas for Growth</div>
+    <div>
+        {% for skill in result.missing_skills %}
+            <span class="tag missing">{{ skill }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="section-title">Curated Recommendations</div>
+    <ul class="suggestions">
+        {% for tip in result.suggestions %}
+            <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<footer>Powered by <b>AI Resume Analyzer</b> — Precision Career Insights</footer>
+
+<script>
+    const fileInput = document.getElementById('resumeFile');
+    const fileName = document.getElementById('fileName');
+    const uploadBox = document.getElementById('uploadBox');
+    const form = document.getElementById('uploadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+
+    function showFile(file){
+        if (file) fileName.textContent = "Selected — " + file.name;
+    }
+
+    fileInput.addEventListener('change', () => showFile(fileInput.files[0]));
+
+    ['dragenter','dragover'].forEach(evt => {
+        uploadBox.addEventListener(evt, (e) => {
+            e.preventDefault(); e.stopPropagation();
+            uploadBox.classList.add('dragover');
+        });
+    });
+    ['dragleave','drop'].forEach(evt => {
+        uploadBox.addEventListener(evt, (e) => {
+            e.preventDefault(); e.stopPropagation();
+            uploadBox.classList.remove('dragover');
+        });
+    });
+    uploadBox.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        if (dt.files.length > 0) {
+            fileInput.files = dt.files;
+            showFile(dt.files[0]);
+        }
+    });
+
+    form.addEventListener('submit', () => {
+        submitBtn.classList.add('loading');
+        btnText.textContent = "Analyzing…";
+    });
+</script>
+
+</body>
+</html>
